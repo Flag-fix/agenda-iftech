@@ -48,6 +48,7 @@ public class ContatoServiceImpl implements ContatoService {
         try {
             var contato = new Contato();
             BeanUtils.copyProperties(contatoDTO, contato);
+            LOGGER.info("Salvando Contato");
             return Optional.of(contatoRepository.save(contato));
         }catch (Exception e) {
             LOGGER.error(e.toString(), e);
@@ -58,6 +59,7 @@ public class ContatoServiceImpl implements ContatoService {
     @Override
     public void deletar(Contato contato) {
         try {
+            LOGGER.info("Deletando contato");
             contatoRepository.delete(contato);
         } catch (Exception e) {
             LOGGER.error(e.toString(), e);
