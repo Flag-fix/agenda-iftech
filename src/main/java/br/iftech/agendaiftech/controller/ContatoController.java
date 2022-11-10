@@ -50,7 +50,7 @@ public class ContatoController {
         if (contatoOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contato não encontrado");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(contatoOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body(contatoOptional);
     }
 
 
