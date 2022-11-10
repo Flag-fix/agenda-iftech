@@ -12,14 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.webjars.NotFoundException;
 
 import javax.validation.Valid;
@@ -52,20 +45,23 @@ public class ContatoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> buscarPorId(@PathVariable(value = "id") Long id) throws NotFoundException {
-        return contatoService.buscarPorId(id).<ResponseEntity<Object>>map(
-                        marca -> ResponseEntity.status(HttpStatus.OK).body(marca))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contato não encontrado"));
+        Optional<Contato> contatoOptional = contatoService.buscarPorId(id);
+
+        if (contatoOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contato não encontrado");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(contatoOptional.get());
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletar(@PathVariable(value = "id") Long id) throws NotFoundException {
         Optional<Contato> contatoOptional = contatoService.buscarPorId(id);
+
         if (contatoOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Contato não encontrado");
         }
         contatoService.deletar(contatoOptional.get());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Contato deletado");
     }
-
 }

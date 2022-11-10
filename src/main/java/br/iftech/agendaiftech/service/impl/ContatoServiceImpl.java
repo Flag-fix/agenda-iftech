@@ -11,9 +11,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
 
 import java.util.Optional;
+
 @Service
 //@AllArgsConstructor
 public class ContatoServiceImpl implements ContatoService {
@@ -33,11 +33,11 @@ public class ContatoServiceImpl implements ContatoService {
     }
 
     @Override
-    public Optional<Contato> buscarPorId(Long id){
+    public Optional<Contato> buscarPorId(Long id) {
         try {
             LOGGER.info("Buscando Contato pelo ID: {}", id);
             return contatoRepository.findById(id);
-        }catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error(e.toString(), e);
             throw new DataIntegrityViolationException(e.toString());
         }
@@ -50,7 +50,7 @@ public class ContatoServiceImpl implements ContatoService {
             BeanUtils.copyProperties(contatoDTO, contato);
             LOGGER.info("Salvando Contato");
             return Optional.of(contatoRepository.save(contato));
-        }catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error(e.toString(), e);
             throw new RuntimeException(e);
         }
